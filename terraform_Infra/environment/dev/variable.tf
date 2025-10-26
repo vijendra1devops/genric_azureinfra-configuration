@@ -28,3 +28,6 @@ variable "ARM_SUBSCRIPTION_ID" {
   type        = string
   sensitive   = true
 }
+variable "dev-acr" {}
+variable "dev-aks-clusters" {}
+variable "dev-mssql-server-with-db" {}

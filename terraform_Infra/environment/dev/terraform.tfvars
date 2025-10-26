@@ -143,4 +143,105 @@ dev-nsgs = {
   }
 }
 
+dev-acr = {
+  dev-acr1 = {
+    name                = "devacrgreenvasu1"
+    resource_group_name = "dev-rg-greenvasu"
+    location            = "Central India"
+    sku                 = "Standard"
+    tags = {
+      environment = "dev"
+      owner       = "greenvasuteam"
+      application = "greenvasu"
+      region      = "Central India"
+      project     = "greenvasu"
+} } }
+
+dev-aks-clusters = {
+  cluster = {
+    vnet_name          = "dev-vnet-greenvasu-aks"
+    vnet_address_space = ["10.0.0.0/8"]
+    subnets = {
+      subnet1 = {
+        subnet_name             = "subnet-aks"
+        subnet_address_prefixes = ["10.1.0.0/16"]
+      }
+      subnet2 = {
+        subnet_name             = "ApplicationGateway"
+        subnet_address_prefixes = ["10.3.0.0/16"]
+      }
+    }
+    resource_group_name = "dev-rg-greenvasu"
+    location            = "Central India"
+    tags = {
+      environment = "dev"
+      owner       = "greenvasuteam"
+      application = "greenvasu"
+      region      = "Central India"
+      project     = "greenvasu"
+    }
+
+
+    # Public IP configuration
+    acr_name          = "devacrgreenvasu1"
+    pip_name          = "dev-pip-greenvasu"
+    allocation_method = "Static"
+    sku               = "Standard"
+    # Application Gateway configuration
+    port                           = 80
+    protocol                       = "Http"
+    request_timeout                = 60
+    cookie_based_affinity          = "Disabled"
+    priority                       = 1
+    rule_type                      = "Basic"
+    tier                           = "Standard_v2"
+    capacity                       = 2
+    app_gway_name                  = "dev-app-gway-greenvasu"
+    sku_tier                       = "Standard_v2"
+    sku_name                       = "Standard_v2"
+    gateway_ip_configuration       = "gway-ip-app-gway-greenvasu"
+    frontend_port_name             = "fend-port-app-gway-greenvasu"
+    frontend_ip_configuration_name = "fend-ip-app-gway-greenvasu"
+    backend_address_pool_name      = "bend-pool-app-gway-greenvasu"
+    backend_http_settings_name     = "bend-http-app-gway-greenvasu"
+    request_routing_rule           = "bend-http-app-gway-greenvasu"
+    http_listener_name             = "greenvasu"
+    # AKS Cluster configuration
+    cluster_name = "dev-aks-cluster-greenvasu"
+    dns_prefix   = "aks1"
+    node_count   = 2
+    node_pool    = "greenvasu"
+    vm_size      = "Standard_DS2_v2"
+
+
+    agis_name      = "agic-aks"
+    network_plugin = "azure"
+    network_policy = "calico"
+    service_cidr   = "10.2.0.0/16"
+    dns_service_ip = "10.2.0.10"
+  }
+
+}
+
+dev-mssql-server-with-db = {
+  "mssql-server-1" = {
+    sql_server_name              = "dev-greenvasu-server"
+    resource_group_name          = "dev-rg-greenvasu"
+    location                     = "Central India"
+    version                      = "12.0"
+    administrator_login          = "greenvasu"
+    administrator_login_password = "GreenVasu@123!"
+    minimum_tls_version          = "1.2"
+    firewall_rule                = "allow-access-to-azure-services"
+    db_name                      = "dev-greenvasu-database"
+    storage_account_type         = "Local"
+    tags = {
+      environment = "dev"
+      owner       = "greenvasuteam"
+      application = "greenvasu"
+      region      = "Central India"
+      project     = "greenvasu"
+    }
+  }
+}
 
