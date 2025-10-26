@@ -1,0 +1,39 @@
+name: Terraform Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:   # for manual trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Azure Login via OIDC
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ../k8sinfra/environments/dev
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ../k8sinfra/environments/dev
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: ../k8sinfra/environments/dev
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        working-directory: ../k8sinfra/environments/dev

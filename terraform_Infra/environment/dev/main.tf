@@ -53,3 +53,21 @@ module "module-keyvaults" {
 #   source = "../../modules/azurerm-linux-vms"
 #   linux-vms=var.dev-linux-vms
 # }
+module "module-acr" {
+  depends_on = [module.module-azurerm_resource_group]
+  source     = "../../resources_modules/azurerm_acr"
+  acr        = var.dev-acr
+
+}
+module "module-aks-cluster" {
+  depends_on   = [module.module-acr]
+  source       = "../../resources_modules/azurerm_aks"
+  aks-clusters = var.dev-aks-clusters
+
+}
+
+module "module-mssql-server-with-db" {
+  depends_on           = [module.module-azurerm_resource_group]
+  source               = "../../resources_modules/azurerm_mssql_server"
+  mssql-server-with-db = var.dev-mssql-server-with-db
+}
